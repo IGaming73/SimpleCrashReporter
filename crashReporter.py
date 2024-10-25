@@ -1,10 +1,12 @@
 # tested on Python 3.12.6
-# made by Ilw‚n: https://github.com/IGaming73/SimpleCrashReporter
+# made by Ilw√¢n: https://github.com/IGaming73/SimpleCrashReporter
 
 import PyQt5.QtWidgets as Qt
 from PyQt5 import QtCore
+import logging as log
 import webbrowser
 import pyperclip
+import traceback
 import sys
 
 
@@ -41,7 +43,7 @@ class Reporter(Qt.QMainWindow):
         self.linkLabel.clicked.connect(lambda: webbrowser.open(self.reportLink))
         self.layout.addWidget(self.linkLabel)
         
-        self.sendLabel2 = Qt.QLabel("explaining how the crash happened and providing the log to help me fix the app.")
+        self.sendLabel2 = Qt.QLabel("explaining how the crash happened and providing the log to help the developpers fix the app.")
         self.sendLabel2.setAlignment(QtCore.Qt.AlignCenter)
         self.layout.addWidget(self.sendLabel2)
         
@@ -84,15 +86,15 @@ class Reporter(Qt.QMainWindow):
 
 if __name__ == "__main__":
     # demo of the crash reporter
-    with open("testlog.log", "w", encoding="utf-8") as log:
-        # creating a test log file
-        log.write("This is the content of the log file\nErrors can be traced here")
+    log.basicConfig(level=log.DEBUG, filename="testlog.log", filemode="w", format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+    log.info("This is the content of the log file, errors can be traced here")
     try:
         print("Here is your code")
         # then an uncatched exception can happen
         print(f"this will create an unexpected exception: {0/0}")
     except Exception as e:  # crash handling
         # here is the syntax to create and show the crash reporter
+        log.critical(f"app crashed with the following exception: {e}\nsee traceback for more details:\n\n{traceback.format_exc()}")
         ReportApp = Qt.QApplication(sys.argv)
         ReportWindow = Reporter(e, "testlog.log", "https://github.com/IGaming73/SimpleCrashReporter/issues")
         ReportApp.exec_()

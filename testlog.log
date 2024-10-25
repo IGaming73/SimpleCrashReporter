@@ -1,0 +1,10 @@
+2024-10-25 10:44:33,951 - root - INFO - This is the content of the log file, errors can be traced here
+2024-10-25 10:44:33,954 - root - CRITICAL - app crashed with the following exception: division by zero
+see traceback for more details:
+
+Traceback (most recent call last):
+  File "c:\Users\ilwan\Desktop\programmation\big projects\SimpleCrashReporter\crashReporter.py", line 94, in <module>
+    print(f"this will create an unexpected exception: {0/0}")
+                                                       ~^~
+ZeroDivisionError: division by zero
+
